@@ -1,11 +1,11 @@
 Name: xrootd-cmstfc
-Version: 1.5.2
-Release: 7%{?dist}
+Version: 2.0.0
+Release: 1%{?dist}
 Summary: CMS TFC plugin for xrootd
 
 Group: System Environment/Daemons
 License: BSD
-URL: https://github.com/bbockelm/xrootd-cmstfc
+URL: https://github.com/CMSCompOps/xrootd-cmstfc
 # Generated from:
 # git-archive master | gzip -7 > ~/rpmbuild/SOURCES/xrootd-lcmaps.tar.gz
 Source0: %{name}.tar.gz
@@ -25,15 +25,9 @@ BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
 BuildRequires: xrootd-devel >= 1:%{xrootd_current_major}.0.0-1
 BuildRequires: xrootd-devel <  1:%{xrootd_next_major}.0.0-1
-BuildRequires: pcre-devel
+BuildRequires: cmake pcre-devel xerces-c-devel jsoncpp-devel >= 1.9.4
 
-BuildRequires: xerces-c-devel
-
-BuildRequires: cmake
-#BuildRequires: xrootd-compat-libs
-
-Requires: /usr/bin/xrootd pcre xerces-c
-#Requires: xrootd-compat-libs
+Requires: /usr/bin/xrootd pcre xerces-c jsoncpp >= 1.9.4
 
 #%if 0%%{?rhel} < 7
 #Requires: xrootd4 >= 1:4.1.0
@@ -71,12 +65,15 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root,-)
 %{_libdir}/libXrdCmsTfc.so
+%{_libdir}/libXrdCmsJson.so
 %if 0%{?rhel} < 8
 %{_libdir}/libXrdCmsTfc.so.*
+%{_libdir}/libXrdCmsJson.so.*
 %endif
 %files devel
 %defattr(-,root,root,-)
 %{_includedir}/XrdCmsTfc.hh
+%{_includedir}/XrdCmsJson.hh
 
 %changelog
 * Fri Jul 28 2023 Mátyás Selmeci <matyas@cs.wisc.edu> - 1.5.2-7
