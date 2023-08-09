@@ -34,3 +34,28 @@ jobs:
           file: docker/Dockerfile.test
           build-contexts: |
             base_img=docker-image://${{ env.BASE_TAG }}
+
+  test-json:
+    name: Test JSON Conversion
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - uses: docker/setup-buildx-action@v2
+        with:
+          driver: docker
+
+      - name: Build Test Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: docker/Dockerfile.test
+          tags: user/xrootd-cmstfc:test
+          build-contexts: |
+            base_img=docker-image://${{ env.BASE_TAG }}
+
+      - name: Unit test
+        run: |
+          docker run --rm user/xrootd-cmstfc:test python3 -m pytest -v
+
