@@ -16,24 +16,16 @@ jobs:
         uses: actions/checkout@v2
 
       - uses: docker/setup-buildx-action@v2
-        with:
-          driver: docker
 
-      - name: Build Base Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: docker/Dockerfile.base
+          file: docker/Dockerfile
           tags: ${{ env.BASE_TAG }}
           load: true
-
-      - name: Build Test Docker image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          file: docker/Dockerfile.test
-          build-contexts: |
-            base_img=docker-image://${{ env.BASE_TAG }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
   test-json:
     name: Test JSON Conversion
@@ -43,19 +35,18 @@ jobs:
         uses: actions/checkout@v2
 
       - uses: docker/setup-buildx-action@v2
-        with:
-          driver: docker
 
-      - name: Build Test Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: docker/Dockerfile.test
-          tags: user/xrootd-cmstfc:test
-          build-contexts: |
-            base_img=docker-image://${{ env.BASE_TAG }}
+          file: docker/Dockerfile
+          tags: ${{ env.BASE_TAG }}
+          load: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Unit test
         run: |
-          docker run --rm user/xrootd-cmstfc:test python3 -m pytest -v
+          docker run --rm ${{ env.BASE_TAG }} python3 -m pytest -v
 
