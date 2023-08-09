@@ -26,13 +26,11 @@ RUN yum install -y  cmake \
                     https://cbs.centos.org/kojifiles/packages/jsoncpp/1.9.4/4.el8s/x86_64/jsoncpp-devel-1.9.4-4.el8s.x86_64.rpm
 
 
-RUN pip3 install pytest
-
 COPY . .
 
-RUN mkdir -p build
-RUN cd build                         &&  \
-       cmake .. -DBUILD_TEST=true    &&  \
-       make                          &&  \
-       make install
+RUN mkdir -p /root/rpmbuild/SOURCES
+RUN tar -zvcf /root/rpmbuild/SOURCES/xrootd-cmstfc.tar.gz  --transform s/xrootd/xrootd-cmstfc-2.0.0/ ../xrootd
 
+RUN rpmbuild -bb spec/xrootd-cmstfc.spec
+
+RUN yum install -y /root/rpmbuild/RPMS/x86_64/xrootd-cmstfc-2.0.0-1.el8.x86_64.rpm
