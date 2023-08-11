@@ -76,6 +76,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/XrdCmsJson.hh
 
 %changelog
+* Fri Aug 11 2023 Sarun Nuntaviriyakul <sarun.nuntaviriyakul@cern.ch> - 2.0.0-1
+- Add JSON module (libXrdCmsJson.so)
+
 * Fri Jul 28 2023 Mátyás Selmeci <matyas@cs.wisc.edu> - 1.5.2-7
 - Fix cmake build fail on EL9 (SOFTWARE-5631)
 
