@@ -23,7 +23,7 @@ make install
 
 ### Building XML and JSON Test
 
-Build executable to test the xml and json module conversion
+Build executable to test the xml and json conversion module
 ```
 mkdir build && cd build
 cmake .. -DBUILD_TEST=true
