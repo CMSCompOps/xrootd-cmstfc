@@ -1,0 +1,32 @@
+<storage-mapping>
+   <lfn-to-pfn protocol="first"
+       path-match="/+other/(.*)"
+       result="/store/other/first/$1/trailer"/>
+   <lfn-to-pfn protocol="first"
+       path-match="/+store/(.*)"
+       result="/store/first/$1/trailer"/>
+   <lfn-to-pfn protocol="first"
+       path-match="/*store/(.*)"
+       result="never/first/$1/trailer"/>
+
+   <lfn-to-pfn protocol="second"
+       path-match="/+test/(.*)"
+       result="//test/$1"/>
+   <lfn-to-pfn protocol="second"
+       chain="first"
+       path-match="/+.*/mc/(.*)"
+       result="//store/nomc/$1"/>
+   <lfn-to-pfn protocol="second"
+       chain="first"
+       path-match="(.*)/mc/(.*)"
+       result="/$1/xmc/$2"/>
+   <lfn-to-pfn protocol="second"
+       chain="first"
+       path-match="(.*)"
+       result="/$1"/>
+
+   <lfn-to-pfn protocol="root"
+       chain="second"
+       path-match="(.*)"
+       result="root://host.domain/aaa/bbb$1"/>
+</storage-mapping>
