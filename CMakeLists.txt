@@ -7,6 +7,7 @@ find_package( Xrootd REQUIRED )
 find_package( XercesC REQUIRED )
 find_package( Pcre REQUIRED )
 find_package( Jsoncpp REQUIRED )
+set (CMAKE_CXX_STANDARD 11)
 
 if( CMAKE_COMPILER_IS_GNUCXX )
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror" )
