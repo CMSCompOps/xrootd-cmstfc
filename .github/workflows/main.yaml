@@ -4,7 +4,7 @@ on:
   push
 
 env:
-  BASE_TAG: user/xrootd-cmstfc
+  BASE_TAG: user/xrootd-cmstfc:base
   LATEST_TAG: ghcr.io/guyzsarun/xrootd-cmsjson:latest
 
 jobs:
@@ -25,7 +25,7 @@ jobs:
         with:
           context: .
           file: docker/Dockerfile.rpm
-          tags: ${{ env.BASE_TAG }}:${{ matrix.version }}
+          tags: ${{ env.BASE_TAG }}
           build-args: |
             IMAGE=${{ matrix.version }}
           load: true
@@ -34,7 +34,7 @@ jobs:
 
       - name: Unit test
         run: |
-          docker run --rm ${{ env.BASE_TAG }}:${{ matrix.version }} python3 -m pytest -v
+          docker run --rm ${{ env.BASE_TAG }} python3 -m pytest -v
 
   # test-json:
   #   name: Test JSON Conversion
