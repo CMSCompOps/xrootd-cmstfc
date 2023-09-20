@@ -10,6 +10,7 @@ env:
 jobs:
   build:
     strategy:
+      fail-fast: false
       matrix:
         version: ["almalinux:8", "almalinux:9"]
     runs-on: ubuntu-latest
