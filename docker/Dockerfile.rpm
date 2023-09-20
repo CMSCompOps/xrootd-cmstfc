@@ -1,16 +1,16 @@
-ARG IMAGE_TAG=8
-FROM almalinux:$IMAGE_TAG
+ARG IMAGE=almalinux:8
+FROM $IMAGE
 
 MAINTAINER Sarun Nuntaviriyakul <sarun.nuntaviriyakul@cern.ch>
 LABEL org.opencontainers.image.source https://github.com/guyzsarun/xrootd-cmsjson
 
 WORKDIR /xrootd
 
-ARG IMAGE_TAG=8
+ARG IMAGE=almalinux:8
 RUN yum -y update && \
     yum install -y \
         dnf \
-        https://repo.opensciencegrid.org/osg/3.6/osg-3.6-el${IMAGE_TAG}-release-latest.rpm \
+        https://repo.opensciencegrid.org/osg/3.6/osg-3.6-el$(echo $IMAGE | cut -d ":" -f 2)-release-latest.rpm \
         epel-release
 
 RUN dnf group install -y "Development Tools"

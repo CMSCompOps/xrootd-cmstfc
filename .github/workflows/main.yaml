@@ -11,7 +11,7 @@ jobs:
   build:
     strategy:
       matrix:
-        version: [8, 9]
+        version: [almalinux:8, almalinux:9]
     runs-on: ubuntu-latest
     steps:
       - name: Check out Git repository
@@ -26,7 +26,7 @@ jobs:
           file: docker/Dockerfile.rpm
           tags: ${{ env.BASE_TAG }}
           build-args: |
-            IMAGE_TAG =${{ matrix.version }}
+            IMAGE=${{ matrix.version }}
           load: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
