@@ -27,6 +27,8 @@ RUN yum install -y  --enablerepo=osg-contrib \
                     jsoncpp                  \
                     jsoncpp-devel
 
+RUN pip3 install pytest
+
 COPY . .
 
 RUN mkdir -p build                   &&  \
