@@ -16,33 +16,22 @@ RUN yum -y update && \
 RUN dnf group install -y "Development Tools"
 
 # CMS TFC dependency
-RUN yum install -y  cmake \
-                    xrootd \
-                    python3-devel \
-                    python3-xrootd \
-                    xrootd-devel \
-                    pcre-devel \
-                    xerces-c-devel \
-                    xrootd-devel
-
-RUN yum install -y --enablerepo=osg-contrib \
-                    jsoncpp \
+# CMS TFC dependency
+RUN yum install -y  --enablerepo=osg-contrib \
+                    cmake                    \
+                    xrootd                   \
+                    python3-devel            \
+                    python3-xrootd           \
+                    xrootd-devel             \
+                    pcre-devel               \
+                    xerces-c-devel           \
+                    jsoncpp                  \
                     jsoncpp-devel
-
-RUN pip3 install pytest
 
 COPY . .
 
-# RUN mkdir -p /root/rpmbuild/SOURCES
-# RUN tar -zvcf /root/rpmbuild/SOURCES/xrootd-cmstfc.tar.gz  --transform s/xrootd/xrootd-cmstfc-2.0.0/ ../xrootd
+RUN mkdir -p /root/rpmbuild/SOURCES
+RUN tar -zvcf /root/rpmbuild/SOURCES/xrootd-cmstfc.tar.gz  --transform s/xrootd/xrootd-cmstfc-2.0.0/ ../xrootd
 
-# RUN rpmbuild -bb spec/xrootd-cmstfc.spec
-
-# RUN yum install -y /root/rpmbuild/RPMS/x86_64/xrootd-cmstfc-2.0.0-1.el8.x86_64.rpm
-
-RUN mkdir -p build
-RUN cd build                         &&  \
-       cmake .. -DBUILD_TEST=true    &&  \
-       make                          &&  \
-       make install
-
+RUN rpmbuild -bb spec/xrootd-cmstfc.spec
+RUN yum install -y /root/rpmbuild/RPMS/x86_64/xrootd-cmstfc-2.0.0-2.el8.x86_64.rpm
