@@ -39,9 +39,11 @@ RUN pip3 install pytest
 
 COPY . .
 
-RUN mkdir -p build                   &&  \
+RUN if [[ $(echo $IMAGE | cut -d ":" -f 2) = "7" ]]; then \
+        source /opt/rh/devtoolset-7/enable; \
+    fi && mkdir -p build             &&  \
        cd build                      &&  \
-       cmake .. -DBUILD_TEST=true    &&  \
+       cmake3 .. -DBUILD_TEST=true   &&  \
        make                          &&  \
        make install
 
