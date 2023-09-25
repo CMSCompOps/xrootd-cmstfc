@@ -8,8 +8,11 @@ env:
   LATEST_TAG: ghcr.io/guyzsarun/xrootd-cmsjson:latest
 
 jobs:
-  build:
-    name: Build
+  build-test:
+    strategy:
+      fail-fast: false
+      matrix:
+        version: ["centos:7", "almalinux:8", "almalinux:9"]
     runs-on: ubuntu-latest
     steps:
       - name: Check out Git repository
@@ -23,26 +26,8 @@ jobs:
           context: .
           file: docker/Dockerfile
           tags: ${{ env.BASE_TAG }}
-          load: true
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-  test-json:
-    name: Test JSON Conversion
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out Git repository
-        uses: actions/checkout@v2
-
-      - uses: docker/setup-buildx-action@v2
-
-      - name: Build Docker image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          file: docker/Dockerfile
-          tags: ${{ env.BASE_TAG }}
+          build-args: |
+            IMAGE=${{ matrix.version }}
           load: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -51,9 +36,12 @@ jobs:
         run: |
           docker run --rm ${{ env.BASE_TAG }} python3 -m pytest -v
 
-  test-rpm:
-    name: Package RPM
-    needs: build
+  build-rpm:
+    needs: build-test
+    strategy:
+      fail-fast: false
+      matrix:
+        version: ["centos:7", "almalinux:8", "almalinux:9"]
     runs-on: ubuntu-latest
     steps:
       - name: Check out Git repository
@@ -66,6 +54,9 @@ jobs:
         with:
           context: .
           file: docker/Dockerfile.rpm
+          tags: ${{ env.BASE_TAG }}
+          build-args: |
+            IMAGE=${{ matrix.version }}
           load: true
           cache-from: type=gha
           cache-to: type=gha,mode=max

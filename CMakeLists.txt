@@ -8,13 +8,9 @@ find_package( XercesC REQUIRED )
 find_package( Pcre REQUIRED )
 find_package( Jsoncpp REQUIRED )
 
-if( CMAKE_COMPILER_IS_GNUCXX )
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror" )
-endif()
+set (CMAKE_CXX_STANDARD 11)
 
-if( CMAKE_COMPILER_IS_GNUCC )
-  set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -Wall -Werror" )
-endif()
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall" )
 
 include_directories( "${PROJECT_SOURCE_DIR}" "${XROOTD_INCLUDES}" "${XERCES_INCLUDES}" "${PCRE_INCLUDES}" "${JSONCPP_INCLUDES}")
 

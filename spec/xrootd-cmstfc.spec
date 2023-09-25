@@ -1,13 +1,18 @@
 Name: xrootd-cmstfc
-Version: 2.0.0
+Version: 2.0.1
 Release: 1%{?dist}
 Summary: CMS TFC plugin for xrootd
 
 Group: System Environment/Daemons
 License: BSD
 URL: https://github.com/CMSCompOps/xrootd-cmstfc
-# Generated from:
-# git-archive master | gzip -7 > ~/rpmbuild/SOURCES/xrootd-lcmaps.tar.gz
+
+%if %{rhel} == 7
+%define CMAKE cmake3
+%else
+%define CMAKE cmake
+%endif
+
 Source0: %{name}.tar.gz
 
 BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
@@ -25,16 +30,16 @@ BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
 BuildRequires: xrootd-devel >= 1:%{xrootd_current_major}.0.0-1
 BuildRequires: xrootd-devel <  1:%{xrootd_next_major}.0.0-1
-BuildRequires: cmake pcre-devel xerces-c-devel jsoncpp-devel >= 1.9.4
+BuildRequires: %{CMAKE} pcre-devel xerces-c-devel jsoncpp-devel >= 1.9.4
 
 Requires: /usr/bin/xrootd pcre xerces-c jsoncpp >= 1.9.4
 
-#%if 0%%{?rhel} < 7
-#Requires: xrootd4 >= 1:4.1.0
-#%else
+%if %{rhel} == 7
+BuildRequires: devtoolset-7-gcc-c++ devtoolset-7-elfutils devtoolset-7-binutils devtoolset-7-make devtoolset-7-toolchain
+%endif
+
 Requires: xrootd >= 1:%{xrootd_current_major}.0.0-1
 Requires: xrootd <  1:%{xrootd_next_major}.0.0-1
-#%endif
 
 %package devel
 Summary: Development headers and libraries for Xrootd CMSTFC plugin
@@ -51,7 +56,12 @@ Group: System Environment/Development
 
 %build
 cd %{name}-%{version}
+%if %{rhel} == 7
+source /opt/rh/devtoolset-7/enable
+%cmake3 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_LIBDIR=%{_lib} .
+%else
 %cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_LIBDIR=%{_lib} .
+%endif
 make VERBOSE=1 %{?_smp_mflags}
 
 %install
@@ -66,16 +76,15 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %{_libdir}/libXrdCmsTfc.so
 %{_libdir}/libXrdCmsJson.so
-%if 0%{?rhel} < 8
-%{_libdir}/libXrdCmsTfc.so.*
-%{_libdir}/libXrdCmsJson.so.*
-%endif
 %files devel
 %defattr(-,root,root,-)
 %{_includedir}/XrdCmsTfc.hh
 %{_includedir}/XrdCmsJson.hh
 
 %changelog
+* Mon Sep 25 2023 Sarun Nuntaviriyakul <sarun.nuntaviriyakul@cern.ch> - 2.0.1-1
+- Support build for EL7
+
 * Fri Aug 11 2023 Sarun Nuntaviriyakul <sarun.nuntaviriyakul@cern.ch> - 2.0.0-1
 - Add JSON module (libXrdCmsJson.so)
 
