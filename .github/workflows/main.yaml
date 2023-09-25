@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ["almalinux:8", "almalinux:9"]
+        version: ["centos:7", "almalinux:8", "almalinux:9"]
     runs-on: ubuntu-latest
     steps:
       - name: Check out Git repository
@@ -41,7 +41,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ["almalinux:8", "almalinux:9"]
+        version: ["centos:7", "almalinux:8", "almalinux:9"]
     runs-on: ubuntu-latest
     steps:
       - name: Check out Git repository
