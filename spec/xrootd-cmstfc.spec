@@ -1,6 +1,6 @@
 Name: xrootd-cmstfc
-Version: 2.0.0
-Release: 2%{?dist}
+Version: 2.0.1
+Release: 1%{?dist}
 Summary: CMS TFC plugin for xrootd
 
 Group: System Environment/Daemons
@@ -82,8 +82,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/XrdCmsJson.hh
 
 %changelog
-* Tue Aug 29 2023 Sarun Nuntaviriyakul <sarun.nuntaviriyakul@cern.ch> - 2.0.0-2
-- Update CXX standard
+* Mon Sep 25 2023 Sarun Nuntaviriyakul <sarun.nuntaviriyakul@cern.ch> - 2.0.1-1
+- Support build for EL7
 
 * Fri Aug 11 2023 Sarun Nuntaviriyakul <sarun.nuntaviriyakul@cern.ch> - 2.0.0-1
 - Add JSON module (libXrdCmsJson.so)
