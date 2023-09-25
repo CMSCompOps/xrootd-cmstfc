@@ -38,7 +38,7 @@ RUN if [[ $(echo $IMAGE | cut -d ":" -f 2) = "7" ]]; then \
 COPY . .
 
 RUN mkdir -p /root/rpmbuild/SOURCES
-RUN tar -zvcf /root/rpmbuild/SOURCES/xrootd-cmstfc.tar.gz  --transform s/xrootd/xrootd-cmstfc-2.0.0/ ../xrootd
+RUN tar -zvcf /root/rpmbuild/SOURCES/xrootd-cmstfc.tar.gz  --transform s/xrootd/xrootd-cmstfc-2.0.1/ ../xrootd
 
 RUN rpmbuild -bb spec/xrootd-cmstfc.spec
 RUN yum install -y /root/rpmbuild/RPMS/x86_64/xrootd-cmstfc-2.0.1-1.el$(echo $IMAGE | cut -d ":" -f 2).x86_64.rpm
